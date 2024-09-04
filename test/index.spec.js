@@ -5,6 +5,6 @@ describe('GET /', () => {
   it('should return hello world', (done) => {
     request(app)
       .get('/')
-      .expect('Chaitanya Sharma', done);
+      .expect('DEVAVRAT SINGH', done);
   });
 });
