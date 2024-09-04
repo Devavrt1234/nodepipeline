@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('DEVAVRAT SINGH updating chnages');
+  res.send('DEVAVRAT SINGH is DEVOPS ENGINEER');
 });
 
 module.exports = app;
