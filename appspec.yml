@@ -4,6 +4,8 @@ files:
   - source: /
     destination: /var/nodeapp/
 hooks:
+  BeforeInstall:
+    - overwrite: true 
   AfterInstall:
     - location: scripts/npm-install.sh
       timeout: 300
