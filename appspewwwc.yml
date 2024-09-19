@@ -1,0 +1,11 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/my-node-app  # Change this to your desired path
+
+hooks:
+  BeforeInstall:
+    - location: deploy_script.sh  # Name of your script file
+      timeout: 300
+      runas: ubuntu  # Change if necessary based on your EC2 instance user
