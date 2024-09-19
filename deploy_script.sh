@@ -13,7 +13,7 @@ function pull_and_run_image {
     echo "Authenticating Docker to ECR..."
     aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
-    docker build -t node-repo .
+  
     
     echo "Pulling Docker image from ECR..."
     docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME/nodeimage:$IMAGE_TAG
