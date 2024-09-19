@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-REGION="ap-south-1"  # AWS region
+REGION="eu-north-1"  # AWS region
 ACCOUNT_ID="654654277756"  # Your AWS account ID
 REPOSITORY_NAME="node-repo"  # ECR repository name
 IMAGE_TAG="latest"  # Tag of the image you want to pull
