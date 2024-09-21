@@ -1,32 +1,29 @@
 #!/bin/bash
 
 # Variables
-REGION="eu-north-1"
-REPO_NAME="node-repo"
+REGION="us-east-1"
+ACCOUNT_ID="565393066140."
+REPO_NAME="my-node-now-app"
 IMAGE_NAME="$REPO_NAME:latest"
-CONTAINER_NAME="my-node-app"  # Name of the container
-PORT="3000"  # Port to expose
+
 
 # Step 1: Authenticate Docker to ECR
-#aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin public.ecr.aws/q4p9o7t9
-aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 565393066140.dkr.ecr.eu-north-1.amazonaws.com
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+
 # Step 2: Build the Docker image
 docker build -t $IMAGE_NAME .
 
-
 # Step 3: Tag the image for ECR
-echo "tagging Docker image on ECR..."
-#docker tag node-app-image:latest public.ecr.aws/q4p9o7t9/node-app-image:latest
-docker tag node-repo:latest 565393066140.dkr.ecr.eu-north-1.amazonaws.com/node-repo:latest
+docker tag $IMAGE_NAME $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
+
 # Step 4: Push the image to ECR
-#docker push public.ecr.aws/q4p9o7t9/node-app-image:latest
-docker push 565393066140.dkr.ecr.eu-north-1.amazonaws.com/node-repo:latest
+docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
+
 # Step 6: Pull the Docker image on EC2
-docker 565393066140.dkr.ecr.eu-north-1.amazonaws.com/node-repo:latest
+sudo docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
 
 # Step 7: Run the Docker container
-docker run -d --name my-node-app -p 3000:3000 565393066140.dkr.ecr.eu-north-1.amazonaws.com/node-repo:latest
+sudo docker run -d --name my-node-app -p 3000:3000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
 
 
 echo "Deployment complete."
-
