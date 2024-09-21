@@ -25,7 +25,7 @@ sudo docker pull public.ecr.aws/q4p9o7t9/node-app-image:latest
 
 # Step 7: Run the Docker container
 sudo docker run -d --name my-node-app -p 3000:3000 public.ecr.aws/q4p9o7t9/node-app-image:latest
-ENDSSH
+
 
 echo "Deployment complete."
 
