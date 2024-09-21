@@ -9,13 +9,16 @@ CONTAINER_NAME="my-node-app"  # Name of the container
 PORT="81"  # Port to expose
 
 # Function to authenticate and pull Docker image from ECR
-function pull_and_run_image {
+function push_pull_and_run_image {
     echo "Authenticating Docker to ECR..."
     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/q4p9o7t9
-
+    
+    docker build -t node-app-image .
   
     echo "tagging Docker image on ECR..."
     docker tag node-app-image:latest public.ecr.aws/q4p9o7t9/node-app-image:latest
+
+    docker push public.ecr.aws/q4p9o7t9/node-app-image:latest
     
     echo "Pulling Docker image from ECR..."
     docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME/node-app-image:$IMAGE_TAG
@@ -25,7 +28,7 @@ function pull_and_run_image {
 }
 
 # Execute function
-pull_and_run_image
+push_pull_and_run_image
 
 # List all containers, including stopped ones
 echo "All containers:"
