@@ -1,41 +1,31 @@
 #!/bin/bash
 
-# Define variables
-REGION="us-east-1"  # AWS region
-ACCOUNT_ID="565393066140"  # Your AWS account ID
-REPOSITORY_NAME="node-repo"  # ECR repository name
-IMAGE_TAG="latest"  # Tag of the image you want to pull
+# Variables
+REGION="us-east-1"
+REPO_NAME="node-app-image"
+IMAGE_NAME="$REPO_NAME:latest"
 CONTAINER_NAME="my-node-app"  # Name of the container
 PORT="3000"  # Port to expose
 
-# Function to authenticate and pull Docker image from ECR
-function push_pull_and_run_image {
-    echo "Authenticating Docker to ECR..."
-    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/q4p9o7t9
-    
-    docker build -t node-app-image .
-  
-    echo "tagging Docker image on ECR..."
-    docker tag node-app-image:latest public.ecr.aws/q4p9o7t9/node-app-image:latest
+# Step 1: Authenticate Docker to ECR
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin public.ecr.aws/q4p9o7t9
 
-    docker push public.ecr.aws/q4p9o7t9/node-app-image:latest
-    
-    echo "Pulling Docker image from ECR..."
-    docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME/node-app-image:$IMAGE_TAG
+# Step 2: Build the Docker image
+docker build -t $IMAGE_NAME .
 
-    echo "Running Docker container..."
-    docker run -d --name $CONTAINER_NAME -p $PORT:$PORT $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG
-}
+# Step 3: Tag the image for ECR
+echo "tagging Docker image on ECR..."
+docker tag node-app-image:latest public.ecr.aws/q4p9o7t9/node-app-image:latest
 
-# Execute function
-push_pull_and_run_image
+# Step 4: Push the image to ECR
+docker push public.ecr.aws/q4p9o7t9/node-app-image:latest
 
-# List all containers, including stopped ones
-echo "All containers:"
-docker ps -a
+# Step 6: Pull the Docker image on EC2
+sudo docker pull public.ecr.aws/q4p9o7t9/node-app-image:latest
 
-# Retrieve the container name
-CONTAINER_NAME=$(docker ps -f name=$CONTAINER_NAME -q)
+# Step 7: Run the Docker container
+sudo docker run -d --name my-node-app -p 3000:3000 public.ecr.aws/q4p9o7t9/node-app-image:latest
+ENDSSH
 
-# Print the container name
-echo "Container name: $CONTAINER_NAME"
+echo "Deployment complete."
+
