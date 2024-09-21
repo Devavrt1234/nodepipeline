@@ -11,12 +11,14 @@ PORT="3000"  # Port to expose
 # Function to authenticate and pull Docker image from ECR
 function pull_and_run_image {
     echo "Authenticating Docker to ECR..."
-    aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/q4p9o7t9
 
   
+    echo "tagging Docker image on ECR..."
+    docker tag node-app-image:latest public.ecr.aws/q4p9o7t9/node-app-image:latest
     
     echo "Pulling Docker image from ECR..."
-    docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME/nodeimage:$IMAGE_TAG
+    docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME/node-app-image:$IMAGE_TAG
 
     echo "Running Docker container..."
     docker run -d --name $CONTAINER_NAME -p $PORT:$PORT $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:$IMAGE_TAG
