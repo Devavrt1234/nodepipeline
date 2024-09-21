@@ -6,7 +6,7 @@ ACCOUNT_ID="565393066140"  # Your AWS account ID
 REPOSITORY_NAME="node-repo"  # ECR repository name
 IMAGE_TAG="latest"  # Tag of the image you want to pull
 CONTAINER_NAME="my-node-app"  # Name of the container
-PORT="3000"  # Port to expose
+PORT="81"  # Port to expose
 
 # Function to authenticate and pull Docker image from ECR
 function pull_and_run_image {
