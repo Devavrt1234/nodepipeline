@@ -23,7 +23,7 @@ docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
 sudo docker pull $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
 
 # Step 7: Run the Docker container
-sudo docker run -d --name my-node-app -p 3000:3000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
+sudo docker run -d --name devavrat -p 3000:3000 $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:latest
 
 
 echo "Deployment complete."
