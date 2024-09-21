@@ -2,7 +2,7 @@
 
 # Variables
 REGION="us-east-1"
-ACCOUNT_ID="565393066140."
+ACCOUNT_ID="565393066140"
 REPO_NAME="my-node-now-app"
 IMAGE_NAME="$REPO_NAME:latest"
 
